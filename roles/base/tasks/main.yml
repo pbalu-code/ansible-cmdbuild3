@@ -1,0 +1,68 @@
+---
+- name: Collect instaled packages
+  package_facts:
+    manager: auto
+
+- name: libselinux-python
+  become: true
+  yum:
+    name: libselinux-python
+    state: present
+  ignore_errors: True
+
+- name: SELinux(/etc/sysconfig/selinux)
+  become: true
+  selinux:
+    state: disabled
+  when: "'selinux-policy' in ansible_facts.packages"
+  ignore_errors: True
+
+- name: SELinux (setenforce)
+  become: true
+  command: setenforce 0
+  when: "'selinux-policy' in ansible_facts.packages"
+
+
+- name: firewalld(Centos/RHEL 7)
+  become: yes
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: no
+  when: "(supervisor == 'systemd' and 'iptables-services' in ansible_facts.packages)"
+
+
+- name: Base OS things (Centos/RHEL 7)
+  become: yes
+  yum:
+    name: epel-release
+    state: present
+  when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
+
+#- name: Set Locale conf
+#  become: true
+#  template:
+#    src: templates/locale.conf.j2
+#    dest: /etc/locale.conf
+#    owner: root
+#    group: root
+#    mode: '0644'
+
+- name: Ensure set LANGS OK
+  shell: "localectl set-locale LANG='{{ locale }}' LC_CTYPE='{{ locale }}'LC_NUMERIC='{{ locale }}' LC_TIME='{{ locale }}' LC_COLLATE='{{ locale }}' LC_MONETARY='{{ locale }}' LC_MESSAGES='{{ locale }}' LC_PAPER='{{ locale }}' LC_NAME='{{ locale }}' LC_ADDRESS='{{ locale }}' LC_TELEPHONE='{{ locale }}' LC_MEASUREMENT='{{ locale }}' LC_IDENTIFICATION='{{ locale }}'"
+
+- shell: source /etc/locale.conf
+
+- name: Timezone (Centos/RHEL 7)
+  become: true
+  command: timedatectl set-timezone {{zone}}
+
+- name: Install Python PIP
+  yum:
+    name: python-pip
+    state: latest
+
+- name: Make sure psycopg2 is installed
+  pip:
+    name: psycopg2-binary
+    state: latest

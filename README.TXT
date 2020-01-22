@@ -1,0 +1,58 @@
+ANSIBLE-CMDBUILD 3
+
+Centos 7 / RedHat
+
+CMDBuild 3.1.1 installation playbook
+Please refer CMDBuild Technical Manual for details of installation process.
+https://www.cmdbuild.org/file/manuali/technical-manual-in-english
+This playbook intend to use for evaluation or development use.
+DO NOT USE FOR PRODUCTION ENVIRONMENT!!
+
+Prerequisist: Ansible >2.0 installed system
+Target system:
+ CentOS/RHEL 7 64bit minimal installed
+ 8GB RAM and 100GB storage available are recommended
+Login as ansible or other user what you set is host file
+Basic configurations can be edited in "hosts.yml" file.
+
+Usage:
+1. Copy all files to Ansible executable directory and download CMDBuild source (war) into "files" folder.
+2. Edit "hosts.yml" file and replace "cmdbuild_hostname" to your target hostname or IP address
+3. Invoke command;
+'''
+# ansible-playbook -i hosts.yml site.yml --ask-pass 
+'''
+
+4. Playbook is Installing;
+- Oracle JDK 1.8
+- Postgres 10
+- Tomcat 8.55
+- CMDBuild 3.1.1
+
+5. After completed playbook, 
+Check Tomcat logs to find "Server startup in XXXXXX ms"
+'''
+# tail -f /opt/tomcat/logs/catalina.out
+'''
+6. Access from your browser;
+http://TARGET IP:8080/cmdbuild
+to start GUI installation for CMDBuild.
+
+7. On GUI setup,
+CMDBuild database name: cmdbuild
+Create Shark schima: yes
+Postgres Host: localhost
+Postgres port: 5432
+Postgres user: postgres
+Password: postgres
+Login user: admin
+Login password: admin
+
+8. if you have something wrong, 
+check /opt/tomcat/logs/catalina.out, cmdbuild.log
+then restart tomcat.
+'''
+# systemctl restart tomcat
+'''
+Enjoy CMDBuild!
+

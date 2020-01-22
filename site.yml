@@ -1,0 +1,13 @@
+---
+- hosts: cmdbuild
+  become: true
+  roles:
+    - base
+    - postgresql
+    - tomcat
+    - cmdbuild
+
+  post_tasks:
+    - name:
+      debug:
+        msg="CMDBuild http://{{ ansible_host }}:8080/cmdbuild"

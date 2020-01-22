@@ -1,0 +1,85 @@
+---
+- name: CMDBuild Deploy
+  become: true
+  copy:
+    src: files/cmdbuild-3.1.1.war
+    dest: /opt/tomcat/webapps/cmdbuild.war
+    owner: tomcat
+    group: tomcat
+    mode: '0644'
+
+
+#- name: Shark META-INF/context.xml
+#  replace: >
+#    dest=/opt/tomcat/webapps/shark/META-INF/context.xml
+#    regexp='\${cmdbuild}'
+#    replace='cmdbuild'
+
+- wait_for: path=/opt/tomcat/webapps/cmdbuild/WEB-INF/conf/database.conf_example
+
+#- name: CMDBuild Setup
+#  lineinfile: >
+#    dest=/opt/tomcat/webapps/cmdbuild/WEB-INF/conf/auth.conf
+#    state=present
+#    insertafter=EOF
+#    line=serviceusers.privileged=workflow
+
+- name: Set CMDBuild DB conf
+  become: true
+  template:
+    src: templates/database.conf.j2
+    dest: /opt/tomcat/webapps/cmdbuild/WEB-INF/conf/database.conf
+    owner: tomcat
+    group: tomcat
+    mode: '0644'
+
+#- name: Create databases
+#  become: true
+#  become_user: postgres
+#  postgresql_db:
+#    name: "{{ db_name }}"
+#    encoding: 'UTF-8'
+#    lc_collate: 'en_US.UTF-8'
+#    lc_ctype: 'en_US.UTF-8'
+#    template: 'template0'
+#    state: present
+
+#- name: Create user for CMDBuild DB
+#  become: true
+#  become_user: "{{ db_admin_user }}"
+#  postgresql_user:
+#    db: "{{ db_name }}"
+#    name: "{{ db_user }}"
+#    password: "{{ db_password }}"
+#    priv: ALL
+#    state: present
+
+
+- name: Change Postgres user's password
+  become: true
+  become_user: "{{ db_admin_user }}"
+  postgresql_user:
+    #db: "{{ db_name }}"
+    name: postgres
+    password: "{{ db_admin_password }}"
+
+- name: Wait for the deploy script is present
+  wait_for:
+    path: /opt/tomcat/webapps/cmdbuild/cmdbuild.sh
+
+- name: Set mode of install script
+  file:
+    path: /opt/tomcat/webapps/cmdbuild/cmdbuild.sh
+    mode: '0755'
+
+- name: Deploy demo database
+  shell: /opt/tomcat/webapps/cmdbuild/cmdbuild.sh dbconfig create demo -configfile /opt/tomcat/webapps/cmdbuild/WEB-INF/conf/database.conf
+  tags:
+    - demo-database
+
+- name: Tomcat Restart
+  systemd:
+    name: tomcat
+    state: restarted
+  ignore_errors: True
+  when: supervisor == 'systemd'

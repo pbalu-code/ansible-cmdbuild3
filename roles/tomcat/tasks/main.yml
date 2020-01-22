@@ -1,0 +1,105 @@
+---
+- name: OpenJDK
+  become: true
+  yum:
+    name: [ java-1.8.0-openjdk.x86_64, java-1.8.0-openjdk-devel, java-1.8.0-openjdk ]
+    state: present
+
+# Install tomcat
+- name: Check, is tomcat folder present
+  stat:
+    path: /opt/tomcat
+  register: tomcat_folder
+
+- block:
+  - name: tomcat group
+    become: true
+    group:
+      name: tomcat
+
+  - name: tomcat user
+    become: true
+    user:
+      name: tomcat
+      group: tomcat
+      password: password
+
+  - name: Unarchive Tomcat
+    unarchive:
+      src: "{{ TOMCAT_DL_URL }}"
+      dest: /tmp
+      copy: no
+
+  - name: Move tomcat dir
+    become: true
+    shell: mv /tmp/apache-tomcat-{{ TOMCAT_VER }} /opt/tomcat
+
+  - name: Replace config
+    become: true
+    replace: dest=/opt/tomcat/conf/tomcat-users.xml regexp='{{ item.regexp }}' replace='{{ item.replace }}'
+    with_items:
+    - regexp: '^<tomcat-users>'
+      replace: ''
+    - regexp: '^</tomcat-users>'
+      replace: ''
+     
+  - name: Sed config
+    become: true
+    lineinfile:
+      dest: /opt/tomcat/conf/tomcat-users.xml
+      line: '{{ item }}'
+    with_items:
+      - '<tomcat-users>'
+      - '  <role rolename="manager-script"/>'
+      - '  <user username="tomcat" password="password" roles="manager-script"/>'
+      - '</tomcat-users>'
+
+  - name: Change Owner
+    become: true
+    file:
+      path: /opt/tomcat
+      owner: tomcat
+      group: tomcat
+      recurse: yes
+
+  - block:
+    - name: Startup script copy(Centos/RHEL 7)
+      become: true
+      copy:
+        src: roles/tomcat/files/tomcat.service
+        dest: /usr/lib/systemd/system/
+        mode: 755
+      when: supervisor == 'systemd'
+
+    - name: Start Tomcat
+      become: true
+      systemd:
+        name: tomcat
+        state: started
+        enabled: yes
+      when: supervisor == 'systemd'
+    
+  - name: setenv copy
+    become: true
+    copy:
+      src: roles/tomcat/files/setenv.sh
+      dest: /opt/tomcat/bin
+      mode: '0755'
+
+  - name: JDBC Driver
+    become: true
+    get_url:
+      url: "{{ JDBC_URL }}"
+      dest: /opt/tomcat/lib/
+      owner: tomcat
+      group: tomcat
+  
+  when: tomcat_folder.stat.exists == false
+
+- name: Restart Tomcat
+  become: true
+  systemd:
+    name: tomcat
+    state: restarted
+    enabled: yes
+  when: supervisor == 'systemd'
