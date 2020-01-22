@@ -26,6 +26,7 @@ Usage:
 4. Playbook is Installing;
 - Oracle JDK 1.8
 - Postgres 10
+- PostGIS 2.4-10
 - Tomcat 8.55
 - CMDBuild 3.1.1 / Ready2Use 2
 
