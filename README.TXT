@@ -27,7 +27,7 @@ Usage:
 - Oracle JDK 1.8
 - Postgres 10
 - Tomcat 8.55
-- CMDBuild 3.1.1
+- CMDBuild 3.1.1 / Ready2Use 2
 
 5. After completed playbook, 
 Check Tomcat logs to find "Server startup in XXXXXX ms"

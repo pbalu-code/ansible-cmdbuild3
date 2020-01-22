@@ -2,22 +2,32 @@
 - name: CMDBuild Deploy
   become: true
   copy:
-    src: files/cmdbuild-3.1.1.war
+    src: "{{ offline_source }}"
     dest: /opt/tomcat/webapps/cmdbuild.war
     owner: tomcat
     group: tomcat
     mode: '0644'
-  when: download_cmdbuild == false
+  when: download_war == false
 
 - name: CMDBuild Deploy (Takes time.. a lot...)
   become: true
   get_url:
-    url: https://sourceforge.net/projects/cmdbuild/files/3.1.1/cmdbuild-3.1.1.war/download
+    url: "{{ cmdbuild_url }}"
     dest: /opt/tomcat/webapps/cmdbuild.war
     owner: tomcat
     group: tomcat
     mode: '0644'
-  when: download_cmdbuild == true
+  when: ( download_war == true and install_ready2use == false )
+
+- name: CMDBuild Ready2Use2 Deploy (Takes time.. a lot...)
+  become: true
+  get_url:
+    url: "{{ ready2use_url }}"
+    dest: /opt/tomcat/webapps/cmdbuild.war
+    owner: tomcat
+    group: tomcat
+    mode: '0644'
+  when: ( download_war == true and install_ready2use == true )
 
 #- name: Shark META-INF/context.xml
 #  replace: >
@@ -64,6 +74,11 @@
 #    priv: ALL
 #    state: present
 
+#- name: Create PostGIS extension in PostgreSQL
+#  become: true
+#  become_user: "{{ db_admin_user }}"
+#  postgresql_query:
+#    query: CREATE EXTENSION postgis;
 
 - name: Change Postgres user's password
   become: true

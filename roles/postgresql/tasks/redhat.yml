@@ -46,6 +46,11 @@
     name: [ "postgresql{{ __postgresql_version_dotless }}-server", "postgresql-libs", "postgresql{{ __postgresql_version_dotless }}"]
     state: installed
 
+- name: Install PostGIS
+  yum:
+    name: "{{ posgis_to_install }}"
+    state: present
+
 - name: Check for pgdata directory
   stat:
     path: "{{ postgresql_pgdata }}/base"
