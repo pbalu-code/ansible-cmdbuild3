@@ -3,6 +3,8 @@ zone: Europe/Budapest
 zoneinfo_path: /usr/share/zoneinfo/Europe/Budapest
 supervisor: systemd
 #supervisor: supervisord
+download_cmdbuild: true
+# To use sourceforge slow download, set to true!
 
 # Java
 #JAVA_DL_URL: http://download.oracle.com/otn-pub/java/jdk/8u77-b03/jdk-8u77-linux-x64.rpm

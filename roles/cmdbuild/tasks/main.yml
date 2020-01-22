@@ -7,7 +7,17 @@
     owner: tomcat
     group: tomcat
     mode: '0644'
+  when: download_cmdbuild == false
 
+- name: CMDBuild Deploy (Takes time.. a lot...)
+  become: true
+  get_url:
+    url: https://sourceforge.net/projects/cmdbuild/files/3.1.1/cmdbuild-3.1.1.war/download
+    dest: /opt/tomcat/webapps/cmdbuild.war
+    owner: tomcat
+    group: tomcat
+    mode: '0644'
+  when: download_cmdbuild == true
 
 #- name: Shark META-INF/context.xml
 #  replace: >
