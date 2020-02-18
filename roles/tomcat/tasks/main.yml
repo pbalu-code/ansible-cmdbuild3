@@ -1,8 +1,8 @@
 ---
-- name: OpenJDK
+- name: OpenJDK 11
   become: true
   yum:
-    name: [ java-1.8.0-openjdk.x86_64, java-1.8.0-openjdk-devel, java-1.8.0-openjdk ]
+    name: [ java-11-openjdk.x86_64, java-11-openjdk-devel, java-11-openjdk ]
     state: present
 
 # Install tomcat
@@ -93,7 +93,7 @@
       dest: /opt/tomcat/lib/
       owner: tomcat
       group: tomcat
-  
+    when: "{{ jdbc_install == true }}"
   when: tomcat_folder.stat.exists == false
 
 - name: Restart Tomcat

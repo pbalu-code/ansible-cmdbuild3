@@ -1,5 +1,5 @@
 [Unit]
-Description=Tomcat 8.5 servlet container
+Description=Tomcat 9.0.31 servlet container
 After=network.target
 
 [Service]

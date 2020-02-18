@@ -3,11 +3,11 @@ zone: Europe/Budapest
 zoneinfo_path: /usr/share/zoneinfo/Europe/Budapest
 supervisor: systemd
 #supervisor: supervisord
-offline_source: files/ready2use-2.0-3.1a.war
+offline_source: files/ready2use-2.0-3.2.war
 download_war: true
 install_ready2use: true
-cmdbuild_url: https://sourceforge.net/projects/cmdbuild/files/3.1.1/cmdbuild-3.1.1.war/download
-ready2use_url: https://sourceforge.net/projects/cmdbuild/files/ready2use-2.0/ready2use-2.0-3.1a.war/download
+cmdbuild_url: https://sourceforge.net/projects/cmdbuild/files/3.2/cmdbuild-3.2.war/download
+ready2use_url: https://sourceforge.net/projects/cmdbuild/files/ready2use-2.0/Core%20updates/ready2use-2.0-3.2/ready2use-2.0-3.2.war/download
 
 # To use sourceforge slow download, set to true!
 
@@ -16,18 +16,20 @@ ready2use_url: https://sourceforge.net/projects/cmdbuild/files/ready2use-2.0/rea
 #JAVA_DL_PATH: /usr/local/src/jdk-8u77-linux-x64.rpm
 
 # Tomcat URL
-TOMCAT_DL_URL: https://www.apache.org/dist/tomcat/tomcat-8/v8.5.50/bin/apache-tomcat-8.5.50.tar.gz
-TOMCAT_VER: 8.5.50
+#TOMCAT_DL_URL: https://www.apache.org/dist/tomcat/tomcat-8/v8.5.50/bin/apache-tomcat-8.5.50.tar.gz
+#TOMCAT_VER: 8.5.50
+TOMCAT_DL_URL: https://downloads.apache.org/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
+TOMCAT_VER: 9.0.31
 
 # Postgres URL
 #postgre_repo_v6: https://yum.postgresql.org/10/redhat/rhel-6-x86_64/pgdg-centos10-10-2.noarch.rpm
 #postgre_repo_v7: https://yum.postgresql.org/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
-JDBC_URL: https://jdbc.postgresql.org/download/postgresql-42.2.9.jar
+JDBC_URL: https://jdbc.postgresql.org/download/postgresql-42.2.10.jar
+jdbc_install: false
 
 # CMDBuild
-CMDBUILD_VER: 3.1.1
-CMDBUILD_URL: https://sourceforge.net/projects/cmdbuild/files/3.1.1/cmdbuild-3.1.1.war
-db_name: cmdbuild31
+CMDBUILD_VER: 3.2
+db_name: cmdbuild32
 db_user: cmdbuser
 db_password: cmdbuser
 db_admin_user: postgres
