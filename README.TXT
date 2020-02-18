@@ -1,8 +1,8 @@
-ANSIBLE-CMDBUILD 3
+ANSIBLE-CMDBUILD 3.2
 
 Centos 7 / RedHat
 
-CMDBuild 3.1.1 installation playbook
+CMDBuild 3.2 installation playbook
 Please refer CMDBuild Technical Manual for details of installation process.
 https://www.cmdbuild.org/file/manuali/technical-manual-in-english
 This playbook intend to use for evaluation or development use.
@@ -25,11 +25,11 @@ Usage:
 '''
 
 4. Playbook is Installing;
-- Oracle JDK 1.8
+- Oracle JDK 11
 - Postgres 10
 - PostGIS 2.4-10
-- Tomcat 8.55
-- CMDBuild 3.1.1 / Ready2Use 2
+- Tomcat 9.0.31
+- CMDBuild 3.2 / Ready2Use 2.0 - 3.2
 
 5. After completed playbook, 
 Check Tomcat logs to find "Server startup in XXXXXX ms"
