@@ -22,7 +22,7 @@
     user:
       name: tomcat
       group: tomcat
-      password: password
+#      password: password
 
   - name: Unarchive Tomcat
     unarchive:
