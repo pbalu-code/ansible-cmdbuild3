@@ -34,3 +34,5 @@ db_user: cmdbuser
 db_password: cmdbuser
 db_admin_user: postgres
 db_admin_password: postgres
+# db_type could be demo | empty
+db_type: empty

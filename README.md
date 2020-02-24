@@ -17,9 +17,10 @@ Basic configurations can be edited in "hosts.yml" file.
 
 Usage:
 1. Copy all files to Ansible executable directory and optionally download CMDBuild or Ready2use source (war) into "files" folder.
-    If you want to use local war file set "download_war: false" in group_vars/cmdbuild.yml.
+    If you want to use local war file, set "download_war: false" in group_vars/cmdbuild.yml.
 2. Edit "hosts.yml" file and replace "cmdbuild_hostname" to your target hostname or IP address
 3. Invoke command;
+
 '''
 # ansible-playbook -i hosts.yml site.yml --ask-pass 
 '''

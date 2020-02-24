@@ -93,7 +93,7 @@
       dest: /opt/tomcat/lib/
       owner: tomcat
       group: tomcat
-    when: "{{ jdbc_install == true }}"
+    when: jdbc_install == true
   when: tomcat_folder.stat.exists == false
 
 - name: Restart Tomcat

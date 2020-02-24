@@ -98,9 +98,9 @@
     mode: '0755'
 
 - name: Deploy demo database
-  shell: /opt/tomcat/webapps/cmdbuild/cmdbuild.sh dbconfig create demo -configfile /opt/tomcat/webapps/cmdbuild/WEB-INF/conf/database.conf
+  shell: "/opt/tomcat/webapps/cmdbuild/cmdbuild.sh dbconfig create {{ db_type }} -configfile /opt/tomcat/webapps/cmdbuild/WEB-INF/conf/database.conf"
   tags:
-    - demo-database
+    - database
 
 - name: Tomcat Restart
   systemd:
