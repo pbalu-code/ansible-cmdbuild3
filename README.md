@@ -1,5 +1,5 @@
 ANSIBLE-CMDBUILD 3.2
-
+--------------------
 Centos 7 / RedHat
 
 CMDBuild 3.2 installation playbook
