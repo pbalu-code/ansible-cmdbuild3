@@ -97,7 +97,7 @@
     path: /opt/tomcat/webapps/cmdbuild/cmdbuild.sh
     mode: '0755'
 
-- name: Deploy demo database
+- name: Deploy PgSql database
   shell: "/opt/tomcat/webapps/cmdbuild/cmdbuild.sh dbconfig create {{ db_type }} -configfile /opt/tomcat/webapps/cmdbuild/WEB-INF/conf/database.conf"
   tags:
     - database

@@ -21,6 +21,7 @@
   become: true
   command: setenforce 0
   when: "'selinux-policy' in ansible_facts.packages"
+  ignore_errors: True
 
 
 - name: firewalld(Centos/RHEL 7)
